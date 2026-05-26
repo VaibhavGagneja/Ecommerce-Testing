@@ -44,7 +44,11 @@ public class DriverManager {
                 break;
         }
 
-        driver.manage().window().maximize();
+        try {
+            driver.manage().window().maximize();
+        } catch (Exception e) {
+            System.err.println("Failed to maximize window, proceeding with default window size: " + e.getMessage());
+        }
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait));
         
         driverThreadLocal.set(driver);

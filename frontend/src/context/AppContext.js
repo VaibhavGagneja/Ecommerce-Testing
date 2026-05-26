@@ -48,8 +48,8 @@ export const AppProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, { cart: [] });
   const [user,     setUser]     = useState(null);
   const [wishlist, setWishlist] = useState([]);
+  const [authLoading, setAuthLoading] = useState(true);
 
-  // ── Page reload pe user + cart restore ──────────────────
   useEffect(() => {
     const token  = localStorage.getItem('token');
     const email  = localStorage.getItem('userEmail');
@@ -63,7 +63,10 @@ export const AppProvider = ({ children }) => {
 
       api.get(`/cart?userId=${numericUserId}`)
         .then(res => dispatch({ type: 'SET_CART', payload: res.data }))
-        .catch(err => console.error('Failed to load cart', err));
+        .catch(err => console.error('Failed to load cart', err))
+        .finally(() => setAuthLoading(false));
+    } else {
+      setAuthLoading(false);
     }
   }, []);
 
@@ -218,6 +221,7 @@ const logout = () => {
       wishlist, toggleWishlist, isWishlisted,
       cart: state.cart, addToCart, removeFromCart,
       updateQuantity, clearCart, totalItems, totalPrice,
+      authLoading,
     }}>
       {children}
     </AppContext.Provider>

@@ -65,25 +65,26 @@ public class ProfilePage extends BasePage {
     }
 
     public void editAddressPincode(String label, String newPincode) {
-        By editBtn = By.xpath("//p[contains(text(), '" + label + "')]/ancestor::div[contains(@class, 'rounded-md')]//button[@title='Edit address']");
-        click(editBtn);
+        By editBtn = By.xpath("//p[contains(., '" + label + "')]/ancestor::div[contains(@class, 'rounded-md')]//button[@title='Edit address']");
+        scrollAndClick(editBtn);
         writeText(addressPincodeInput, newPincode);
+        wait.until(org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe(addressPincodeInput, "value", newPincode));
         click(saveAddressButton);
     }
 
     public boolean isAddressDisplayed(String label) {
-        By addressCard = By.xpath("//p[contains(@class, 'font-black') and contains(text(), '" + label + "')]");
+        By addressCard = By.xpath("//p[contains(@class, 'font-black') and contains(., '" + label + "')]");
         return isElementDisplayed(addressCard);
     }
 
     public boolean isAddressDetailsDisplayed(String label, String detailText) {
-        By detailsTextLocator = By.xpath("//p[contains(text(), '" + label + "')]/ancestor::div[contains(@class, 'rounded-md')]//p[contains(text(), '" + detailText + "')]");
+        By detailsTextLocator = By.xpath("//p[contains(., '" + label + "')]/ancestor::div[contains(@class, 'rounded-md')]//p[contains(., '" + detailText + "')]");
         return isElementDisplayed(detailsTextLocator);
     }
 
     public void deleteAddress(String label) {
-        By deleteBtn = By.xpath("//p[contains(text(), '" + label + "')]/ancestor::div[contains(@class, 'rounded-md')]//button[@title='Delete address']");
-        click(deleteBtn);
+        By deleteBtn = By.xpath("//p[contains(., '" + label + "')]/ancestor::div[contains(@class, 'rounded-md')]//button[@title='Delete address']");
+        scrollAndClick(deleteBtn);
     }
 
     public void triggerEmailOtp() {

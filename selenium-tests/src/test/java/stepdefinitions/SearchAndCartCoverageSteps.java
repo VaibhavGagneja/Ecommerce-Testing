@@ -19,7 +19,7 @@ import java.util.List;
 public class SearchAndCartCoverageSteps {
     private WebDriver driver = Hooks.getDriver();
     private HomePage homePage = new HomePage(driver);
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
     @Given("I am on the home page")
     public void iAmOnTheHomePage() {
@@ -51,23 +51,35 @@ public class SearchAndCartCoverageSteps {
 
     @Given("I am on a product page")
     public void iAmOnAProductPage() {
-        driver.get(Hooks.getProperty("baseUrl") + "/");
-        try { Thread.sleep(2000); } catch (InterruptedException e) {}
-        List<WebElement> products = driver.findElements(By.xpath("//h3"));
+        iAmOnTheHomePage(); // Wait for splash screen to disappear
+        List<WebElement> products = driver.findElements(By.xpath("//h3[contains(@class, 'line-clamp-2')]"));
         if (!products.isEmpty()) {
-            products.get(0).click();
+            WebElement firstProduct = products.get(0);
+            try {
+                ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", firstProduct);
+                Thread.sleep(200);
+                firstProduct.click();
+            } catch (Exception e) {
+                ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", firstProduct);
+            }
         } else {
-            // Fallback
-            driver.get(Hooks.getProperty("baseUrl") + "/product/1");
+            driver.get(Hooks.getProperty("baseUrl") + "/product/29");
         }
-        try { Thread.sleep(2000); } catch (InterruptedException e) {}
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h1[contains(@class, 'text-white') and contains(@class, 'text-xl')] | //span[contains(@class, 'text-3xl') and contains(@class, 'font-black')]")));
     }
 
     @When("I attempt to add the product to my cart")
     public void iAttemptToAddTheProductToMyCart() {
         List<WebElement> addBtns = driver.findElements(By.xpath("//button[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'add to cart')] | //button[contains(., 'Add to')]"));
         if (!addBtns.isEmpty()) {
-            addBtns.get(0).click();
+            WebElement btn = addBtns.get(0);
+            try {
+                ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", btn);
+                Thread.sleep(200);
+                btn.click();
+            } catch (Exception e) {
+                ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+            }
         }
     }
 

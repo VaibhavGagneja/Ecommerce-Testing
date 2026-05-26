@@ -45,9 +45,7 @@ public class ProductSearchAndSortSteps {
         WebDriverWait longWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         // Try multiple locator strategies for the discount text
         By discountTextLocator = By.xpath(
-            "//span[contains(@class, 'text-orange-600') and contains(text(), 'off')] | " +
-            "//div[contains(@class, 'items-baseline')]//span[contains(text(), 'off')] | " +
-            "//span[contains(@class, 'font-bold') and contains(text(), '% off')]"
+            "//span[contains(@class, 'text-orange-600') and contains(., 'off')]"
         );
         WebElement discountElem = longWait.until(ExpectedConditions.visibilityOfElementLocated(discountTextLocator));
         String actualDiscount = discountElem.getText().trim();

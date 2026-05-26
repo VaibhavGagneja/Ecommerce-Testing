@@ -76,6 +76,7 @@ public class BasePage {
                 // Give the browser a microsecond to finish scrolling
                 try { Thread.sleep(100); } catch (InterruptedException e) {}
 
+                element.sendKeys(org.openqa.selenium.Keys.chord(org.openqa.selenium.Keys.CONTROL, "a"), org.openqa.selenium.Keys.BACK_SPACE);
                 element.clear();
                 element.sendKeys(text);
                 return true; // Success! Break the loop.

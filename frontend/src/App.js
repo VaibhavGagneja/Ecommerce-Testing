@@ -46,7 +46,14 @@ const LogoutHandler = () => {
 
 // ── Guest Guard — already logged in toh home pe bhejo ─────
 const GuestRoute = ({ children }) => {
-  const { user } = useApp();
+  const { user, authLoading } = useApp();
+  if (authLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#0D0D0D]">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-orange-500 border-t-transparent" />
+      </div>
+    );
+  }
   return user ? <Navigate to="/" replace /> : children;
 };
 
@@ -131,19 +138,19 @@ function App() {
   }, []);
 
   return (
-    <AnimatePresence mode="wait">
-      {showSplash ? (
-        <SplashScreen key="splash" />
-      ) : (
-        <motion.div key="app" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
-          <BrowserRouter basename="/ecommerce-app">
-            <AppProvider>
+    <AppProvider>
+      <AnimatePresence mode="wait">
+        {showSplash ? (
+          <SplashScreen key="splash" />
+        ) : (
+          <motion.div key="app" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.35 }}>
+            <BrowserRouter basename="/ecommerce-app">
               <AppRoutes />
-            </AppProvider>
-          </BrowserRouter>
-        </motion.div>
-      )}
-    </AnimatePresence>
+            </BrowserRouter>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </AppProvider>
   );
 }
 export default App;

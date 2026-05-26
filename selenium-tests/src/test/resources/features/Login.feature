@@ -20,7 +20,7 @@ Scenario: Failed Login with Invalid Credentials
 Scenario: Failed Login with Invalid Credentials
   Given I navigate to the login page
   When I submit username "" and password ""
-  Then I should see an error message "Email not registered"
+  Then I should see an error message "Email is required"
 
 @Smoke
 Scenario: User Logout and Session Termination

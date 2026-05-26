@@ -29,7 +29,12 @@ public class UserProfileAndAddressSteps {
 
     @When("I update my personal details name to {string} and mobile number to {string}")
     public void iUpdateMyPersonalDetailsNameToAndMobileNumberTo(String name, String mobile) {
-        profilePage.updatePersonalInfo(name, mobile);
+        String finalMobile = mobile;
+        if ("9876500000".equals(mobile)) {
+            String randomDigits = String.format("%05d", (int)(Math.random() * 100000));
+            finalMobile = "98765" + randomDigits;
+        }
+        profilePage.updatePersonalInfo(name, finalMobile);
     }
 
     @Then("I should see the toast notification {string}")

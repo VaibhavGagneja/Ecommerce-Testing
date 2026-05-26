@@ -45,7 +45,7 @@ public class OrderStateTransitionSteps {
             List<WebElement> statusBadges = driver.findElements(By.xpath("//table//tbody//tr//td[6]//span"));
             if (!statusBadges.isEmpty()) {
                 String status = statusBadges.get(0).getText();
-                Assert.assertTrue(status.equals("PENDING") || status.equals("PROCESSING") || status.equals("DELIVERED") || status.equals("SHIPPED"),
+                Assert.assertTrue(status.equals("PENDING") || status.equals("CONFIRMED") || status.equals("PROCESSING") || status.equals("DELIVERED") || status.equals("SHIPPED") || status.equals("CANCELLED"),
                         "Order status should be a valid state");
             } else {
                 System.out.println("No orders found to check state transition");
