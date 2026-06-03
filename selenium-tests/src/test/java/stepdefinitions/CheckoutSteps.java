@@ -18,12 +18,19 @@ public class CheckoutSteps {
     private CartPage cartPage = new CartPage(driver);
     private CheckoutPage checkoutPage = new CheckoutPage(driver);
 
+    private static String lastRegisteredEmail;
+
+    public static String getLastRegisteredEmail() {
+        return lastRegisteredEmail;
+    }
+
     @Given("I register and log in a new customer account")
     public void iRegisterAndLogInANewCustomerAccount() {
         homePage.navigateToLogin();
         String randomSuffix = UUID.randomUUID().toString().substring(0, 8);
         String name = "BDD Customer " + randomSuffix;
         String email = "bdd_" + randomSuffix + "@test.com";
+        lastRegisteredEmail = email;
         String phone = "9" + String.format("%09d", (long)(Math.random() * 1000000000L));
         
         loginPage.register(name, email, phone, "MALE", "Secret123", "Secret123");
