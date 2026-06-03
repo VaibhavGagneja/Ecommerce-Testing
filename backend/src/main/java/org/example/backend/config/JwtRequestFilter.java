@@ -64,7 +64,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
                 method.equalsIgnoreCase("GET") &&
                 !path.contains("/admin/");
 
-        return isAuthRoute || isPublicProduct;
+        boolean isSwaggerRoute = path.equals("/swagger-ui.html") ||
+                path.startsWith("/swagger-ui/") ||
+                path.startsWith("/v3/api-docs");
+
+        return isAuthRoute || isPublicProduct || isSwaggerRoute;
     }
 
     @Override
