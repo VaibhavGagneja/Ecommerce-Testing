@@ -4,17 +4,17 @@
     <test name="E2E Tests">
         <classes>
             <class name="tests.LoginTest"/>
-            <class name="tests.CartOperationsTest"/>
-            <class name="tests.CheckoutFlowTest"/>
-            <class name="runners.TestRunner"/>
+<!--            <class name="tests.CartOperationsTest"/>-->
+<!--            <class name="tests.CheckoutFlowTest"/>-->
+<!--            <class name="runners.TestRunner"/>-->
         </classes>
     </test>
     <test name="API Tests">
         <classes>
             <class name="api.AuthApiTest"/>
-            <class name="api.ProductApiTest"/>
-            <class name="api.CartApiTest"/>
-            <class name="api.ProfileApiTest"/>
+<!--            <class name="api.ProductApiTest"/>-->
+<!--            <class name="api.CartApiTest"/>-->
+<!--            <class name="api.ProfileApiTest"/>-->
         </classes>
     </test>
 </suite>

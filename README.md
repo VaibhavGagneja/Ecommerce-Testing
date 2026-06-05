@@ -252,11 +252,15 @@ The QA framework is configured to run tests against the running local instance o
    ```bash
    mvn clean test
    ```
-4. Run only API integration tests:
+4. Run only API integration tests (using Rest Assured):
    ```bash
    mvn test -DsuiteXmlFile=src/test/resources/testng-api.xml
    ```
-5. Run specific BDD features using Cucumber tags:
+5. Run pure TestNG UI tests (without Cucumber/BDD execution):
+   ```bash
+   mvn test -DsuiteXmlFile=src/test/resources/testng-ui.xml
+   ```
+6. Run specific BDD features using Cucumber tags:
    You can specify tags in your Cucumber runner class or execute Maven profiles to target specific test areas like `@Database`, `@Security`, or `@Responsive`.
 
 ---
@@ -301,7 +305,9 @@ The QA framework is configured to run tests against the running local instance o
 │   ├── src/test/resources/
 │   │   ├── features/              # Cucumber Gherkin feature files
 │   │   ├── config.properties      # Test environments configuration
-│   │   └── testng.xml             # Test suite execution mapping
+│   │   ├── testng.xml             # Main execution suite (UI & API)
+│   │   ├── testng-api.xml         # Pure API integration tests mapping
+│   │   └── testng-ui.xml          # Pure TestNG UI tests (No Cucumber)
 │   └── pom.xml                    # Test dependencies (Selenium, TestNG, etc.)
 │
 ├── login_profile_test_cases.csv   # Documented 110 Test Cases CSV

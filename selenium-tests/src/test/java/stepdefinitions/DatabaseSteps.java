@@ -34,8 +34,7 @@ public class DatabaseSteps {
     public void theDatabaseShouldRejectTheInsertWithAUniqueConstraintError() {
         Assert.assertNotNull(dbException, "Expected a database constraint exception but none was thrown.");
         String errMsg = dbException.getMessage().toLowerCase();
-        Assert.assertTrue(errMsg.contains("duplicate entry") || errMsg.contains("constraint"),
-                "Expected unique constraint error, but got: " + dbException.getMessage());
+        Assert.assertTrue(errMsg.contains("duplicate entry") || errMsg.contains("constraint"), "Expected unique constraint error, but got: " + dbException.getMessage());
     }
 
     @When("I query database for product name {string}")
@@ -68,10 +67,10 @@ public class DatabaseSteps {
         uniqueEmail = "dbtest_" + randomId + "@example.com";
         String randomPhone = String.format("%010d", randomId);
         String insertUserQuery = "INSERT INTO users (email, phone_number, password_hash, full_name, role, enabled, email_verified, phone_verified, dark_mode, marketing_notifications, order_notifications, profile_private, token_version, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-        
+
         try (Connection conn = DatabaseManager.getConnection()) {
             DatabaseManager.executeUpdate(conn, insertUserQuery, uniqueEmail, randomPhone, "pwd", "DB Test User", "CUSTOMER", true, false, false, false, true, true, false, 1);
-            
+
             String selectUserQuery = "SELECT user_id FROM users WHERE email = ?";
             try (ResultSet rs = DatabaseManager.executeQuery(conn, selectUserQuery, uniqueEmail)) {
                 if (rs.next()) {
@@ -85,12 +84,11 @@ public class DatabaseSteps {
 
     @When("I insert a test address with label {string}, city {string}, state {string}, pincode {string}")
     public void iInsertATestAddressWithLabelCityStatePincode(String label, String city, String state, String pincode) throws SQLException {
-        String insertAddressQuery = "INSERT INTO user_addresses (user_id, label, full_name, phone_number, line1, line2, city, state, pincode, latitude, longitude, default_address, created_at, updated_at) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
-        
+        String insertAddressQuery = "INSERT INTO user_addresses (user_id, label, full_name, phone_number, line1, line2, city, state, pincode, latitude, longitude, default_address, created_at, updated_at) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())";
+
         try (Connection conn = DatabaseManager.getConnection()) {
             DatabaseManager.executeUpdate(conn, insertAddressQuery, uniqueUserId, label, "Jane Doe", "9876543210", "123 Main St", "Apt 4B", city, state, pincode, 0.0, 0.0, false);
-            
+
             String selectAddressQuery = "SELECT address_id FROM user_addresses WHERE user_id = ? AND label = ?";
             try (ResultSet rs = DatabaseManager.executeQuery(conn, selectAddressQuery, uniqueUserId, label)) {
                 if (rs.next()) {
@@ -144,7 +142,7 @@ public class DatabaseSteps {
                 }
             }
         }
-        
+
         String cleanupUserQuery = "DELETE FROM users WHERE user_id = ?";
         try (Connection conn = DatabaseManager.getConnection()) {
             DatabaseManager.executeUpdate(conn, cleanupUserQuery, uniqueUserId);
@@ -198,8 +196,7 @@ public class DatabaseSteps {
     public void theDatabaseShouldRejectTheInsertWithAForeignKeyConstraintError() {
         Assert.assertNotNull(dbException, "Expected a database constraint exception but none was thrown.");
         String errMsg = dbException.getMessage().toLowerCase();
-        Assert.assertTrue(errMsg.contains("foreign key") || errMsg.contains("cannot add or update a child row"),
-                "Expected foreign key constraint error, but got: " + dbException.getMessage());
+        Assert.assertTrue(errMsg.contains("foreign key") || errMsg.contains("cannot add or update a child row"), "Expected foreign key constraint error, but got: " + dbException.getMessage());
     }
 
     @When("I register a new customer in the database with email {string} and phone {string}")
@@ -265,12 +262,8 @@ public class DatabaseSteps {
     @Then("I should see in the database that this customer's cart contains {string} unit of {string}")
     public void iShouldSeeInTheDatabaseThatThisCustomerSCartContainsUnitOf(String quantity, String productName) throws SQLException {
         int expectedQty = Integer.parseInt(quantity);
-        String query = "SELECT ci.quantity FROM cart_items ci " +
-                "JOIN cart c ON ci.cart_id = c.id " +
-                "JOIN users u ON c.user_id = u.user_id " +
-                "JOIN products p ON ci.product_id = p.product_id " +
-                "WHERE u.email = ? AND p.name = ?";
-        
+        String query = "SELECT ci.quantity FROM cart_items ci " + "JOIN cart c ON ci.cart_id = c.id " + "JOIN users u ON c.user_id = u.user_id " + "JOIN products p ON ci.product_id = p.product_id " + "WHERE u.email = ? AND p.name = ?";
+
         String customerEmail = CheckoutSteps.getLastRegisteredEmail();
         try (Connection conn = DatabaseManager.getConnection()) {
             try (ResultSet rs = DatabaseManager.executeQuery(conn, query, customerEmail, productName)) {
@@ -319,12 +312,8 @@ public class DatabaseSteps {
     @Then("I should see the order item count as {string} referencing {string} in the database")
     public void iShouldSeeTheOrderItemCountAsReferencingInTheDatabase(String expectedCount, String productName) throws SQLException {
         int expCount = Integer.parseInt(expectedCount);
-        String query = "SELECT COUNT(*) FROM order_items oi " +
-                "JOIN orders o ON oi.order_id = o.order_id " +
-                "JOIN users u ON o.user_id = u.user_id " +
-                "JOIN products p ON oi.product_id = p.product_id " +
-                "WHERE u.email = ? AND p.name = ?";
-        
+        String query = "SELECT COUNT(*) FROM order_items oi " + "JOIN orders o ON oi.order_id = o.order_id " + "JOIN users u ON o.user_id = u.user_id " + "JOIN products p ON oi.product_id = p.product_id " + "WHERE u.email = ? AND p.name = ?";
+
         String customerEmail = CheckoutSteps.getLastRegisteredEmail();
         try (Connection conn = DatabaseManager.getConnection()) {
             try (ResultSet rs = DatabaseManager.executeQuery(conn, query, customerEmail, productName)) {
